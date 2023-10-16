@@ -1,0 +1,17 @@
+@namespace Star_Wars_DataBase.Shared.CounterWithDifferentScopes
+@inherits BlazorStateComponent
+@inject CounterWithDifferentScopesContainer Container
+
+<h3>Connected counter 1: @Container.CounterValue.Value </h3>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        StateAdapter
+            .ConnectContainerState(Container.CounterValue);
+    }
+
+}

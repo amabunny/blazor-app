@@ -1,0 +1,51 @@
+﻿@* ReSharper disable Html.PathError *@
+@page "/"
+@using Microsoft.AspNetCore.Components.Web
+@namespace Star_Wars_DataBase.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Vite.AspNetCore
+
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="~/"/>
+    <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+    <link href="Star_Wars_DataBase.styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" vite-href="~/main.ts" asp-append-version="true"/>
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered"/>
+    <link href="_content/Microsoft.Fast.Components.FluentUI/css/reboot.css" rel="stylesheet"/>
+    <link href="_content/Microsoft.Fast.Components.FluentUI/css/variables.css" rel="stylesheet"/>
+</head>
+
+<body>
+<component type="typeof(App)" render-mode="ServerPrerendered"/>
+
+<div id="blazor-error-ui" style="position: absolute; opacity: 0; top: 0; right: 0;">
+    <environment include="Staging,Production">
+        An error has occurred. This application may no longer respond until reloaded.
+    </environment>
+    <environment include="Development">
+        An unhandled exception has occurred. See browser dev tools for details.
+    </environment>
+</div>
+
+<script src="_framework/blazor.server.js"></script>
+
+<environment include="Development">
+    <script type="module">
+      import RefreshRuntime from "http://localhost:5174/@char.Parse("@")react-refresh"
+      RefreshRuntime.injectIntoGlobalHook(window)
+      window.$RefreshReg$ = () => {}
+      window.$RefreshSig$ = () => (type) => type
+      window.__vite_plugin_react_preamble_installed__ = true
+    </script>
+</environment>
+
+<script type="module" vite-src="~/main.ts"></script>
+
+</body>
+</html>

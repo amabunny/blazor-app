@@ -1,0 +1,42 @@
+﻿@namespace Star_Wars_DataBase.Shared.UI
+
+<div class=@CN.Create("heading", Class)>
+    <Grid TemplateColumns="auto 1fr" AlignItems="GridJustifyItems.Center" ElementWidth="100%">
+        @if (Href != null)
+        {
+            <div class="nav-link">
+                <NavLink Href=@Href>
+                    <Grid TemplateColumns="auto auto"
+                          AlignItems="@GridJustifyItems.Center"
+                          JustifyItems="@GridJustifyItems.Center">
+                        <FluentIcon Icon="@(Icons.Regular.Size32.ArrowCircleLeft)"/>
+                    </Grid>
+                </NavLink>
+            </div>
+        }
+
+        <Grid AutoFlow="column" AlignItems="GridJustifyItems.Center">
+            @ChildContent
+        </Grid>
+    </Grid>
+</div>
+
+<style>
+    .heading {
+        font-size: 32px;
+    }
+</style>
+
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public string? Href { get; set; } = "";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

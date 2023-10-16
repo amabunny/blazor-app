@@ -1,0 +1,72 @@
+﻿@namespace Star_Wars_DataBase.Shared.SWAPI
+@typeparam T where T : class
+
+<div class="container">
+    <FluentOverlay Visible="_loading"
+                   Opacity="0.4"
+                   Alignment="@Align.Center"
+                   Justification="@JustifyContent.Center"
+                   Dismissable="false">
+        <FluentProgressRing/>
+    </FluentOverlay>
+
+    <FluentCard Style="padding: 0 5px; min-height: 400px;">
+        @if (ChildContent != null && Queryable != null)
+        {
+            @ChildContent(Queryable)
+        }
+    </FluentCard>
+
+    <FluentPaginator State="@_pagination"
+                     CurrentPageIndexChanged="OnCurrentPageIndexChanged"
+                     Style="background: transparent;"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public Func<int, Task<PageResult<T>>>? FetchList { get; set; }
+
+    [Parameter]
+    public RenderFragment<IQueryable<T>>? ChildContent { get; set; }
+
+    [Parameter]
+    public List<T>? Items { get; set; }
+
+    private PageResult<T>? _list;
+    private PaginationState _pagination = new() { ItemsPerPage = 10 };
+
+    private int _currentPage = 1;
+
+    private bool _loading = false;
+
+    private IQueryable<T>? Queryable => _list?.Results?.AsQueryable();
+
+    private async Task LoadData()
+    {
+        if (FetchList == null)
+        {
+            return;
+        }
+
+        _loading = true;
+        StateHasChanged();
+        _list = await FetchList.Invoke(_currentPage);
+        _loading = false;
+        await _pagination.SetTotalItemCountAsync(_list.Count);
+        await _pagination.SetCurrentPageIndexAsync(_currentPage - 1);
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async void OnCurrentPageIndexChanged(int pageIndex)
+    {
+        _currentPage = pageIndex + 1;
+        await LoadData();
+    }
+
+}

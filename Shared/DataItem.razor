@@ -1,0 +1,55 @@
+﻿@namespace Star_Wars_DataBase.Shared
+@typeparam TValue 
+
+@if (!Hidden)
+{
+    <div class=@CN.Create("data-item", ("horizontal", Horizontal), ("hidden", Hidden), ("small", Small))>
+        <div class="attribute-name">
+            @AttributeName:
+        </div>
+        <div class="value">
+            @if (Loading)
+            {
+                <FluentSkeleton Height="20px" Shimmer="true" Width="70%" Style="min-width: 150px;"/>
+            }
+            else
+            {
+                @if (ChildContent != null && Value != null)
+                {
+                    @ChildContent(Value)
+                }
+                else
+                {
+                    @Value
+                }
+            }
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public string AttributeName { get; set; } = "";
+
+    [Parameter]
+    public bool Hidden { get; set; } = false;
+
+    [Parameter]
+    public bool Horizontal { get; set; } = false;
+
+    [Parameter]
+    public bool Small { get; set; } = false;
+
+    [Parameter]
+    [EditorRequired]
+    public TValue? Value { get; set; }
+
+    [Parameter]
+    public bool Loading { get; set; } = false;
+
+    [Parameter]
+    public RenderFragment<TValue>? ChildContent { get; set; }
+
+}

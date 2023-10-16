@@ -1,0 +1,57 @@
+@namespace Star_Wars_DataBase.Shared.UI
+
+<div class="breadcrumbs">
+    <Grid AutoFlow="column"
+          Gap="5">
+        <ArrayChild Items="MappedLinks">
+            <NavLink Href="@context.Uri">
+                @context.Title
+            </NavLink> /
+        </ArrayChild>
+    </Grid>
+</div>
+
+@code {
+    
+    [Parameter]
+    [EditorRequired]
+    public BreadcrumbsItems[]? Entries { get; set; }
+
+    private static readonly Dictionary<BreadcrumbsItems, MappedLink> Parts = new()
+    {
+        {
+            BreadcrumbsItems.Categories, new MappedLink
+            { Title = "Categories", Uri = "/swapi" }
+        },
+        {
+            BreadcrumbsItems.Films, new MappedLink()
+            { Title = "Films", Uri = "/swapi/films" }
+        },
+        {
+            BreadcrumbsItems.People, new MappedLink()
+            { Title = "People", Uri = "/swapi/people" }
+        },
+        {
+            BreadcrumbsItems.Vehicles, new MappedLink()
+            { Title = "Vehicles", Uri = "/swapi/vehicles" }
+        },
+        {
+            BreadcrumbsItems.Starships, new MappedLink()
+            { Title = "Starships", Uri = "/swapi/starships" }
+        },
+        {
+            BreadcrumbsItems.Planets, new MappedLink()
+            { Title = "Planets", Uri = "/swapi/planets" }
+        },
+        {
+            BreadcrumbsItems.Species, new MappedLink()
+            { Title = "Species", Uri = "/swapi/species" }
+        }
+    };
+
+    private MappedLink[]? MappedLinks => Entries?
+        .ToList()
+        .ConvertAll(Parts.GetValueOrDefault)
+        .ToArray();
+
+}

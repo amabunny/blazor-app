@@ -1,0 +1,133 @@
+@page "/phone-book"
+@using Star_Wars_DataBase.Data.PhoneBook
+@using Star_Wars_DataBase.Shared.PhoneBook.ContactDialog
+@layout BaseLayout
+@inject IDialogService DialogService
+@inject PhoneBookContainer PhoneBookContainer
+@inherits BlazorStateComponent
+
+<BaseLayoutContent PageTitle="Phone book">
+    <Header>
+        Phone book
+    </Header>
+
+    <RightHeaderAddon>
+        <FluentButton OnClick=@(() => OpenDialogAsync(null))
+                      Appearance="Appearance.Accent"
+                      IconStart="new Icons.Filled.Size16.Add()">
+            Add contact
+        </FluentButton>
+    </RightHeaderAddon>
+
+    <ChildContent>
+        <div class="child-content">
+            <FluentCard>
+                <FluentDataGrid Items="PhoneBookContainer.ContactList.Value.AsQueryable()"
+                                GridTemplateColumns="1fr 1fr 2fr 1fr 1fr 90px">
+                    <ChildContent>
+                        <PropertyColumn Property="item => item.FullName"
+                                        Title="Full name"
+                                        TGridItem="Contact"
+                                        TProp="string"/>
+
+                        <PropertyColumn Property="item => item.PhoneNumber"
+                                        Title="Phone number"
+                                        TGridItem="Contact"
+                                        TProp="string"/>
+
+                        <PropertyColumn Property="item => item.Address"
+                                        TGridItem="Contact"
+                                        TProp="string"/>
+
+                        <TemplateColumn TGridItem="Contact"
+                                        Title="Company">
+                            @(context.Company ?? "–")
+                        </TemplateColumn>
+
+                        <PropertyColumn Property="item => item.Telegram"
+                                        TGridItem="Contact"
+                                        TProp="string"/>
+
+                        <TemplateColumn Title="Actions"
+                                        Context="contact"
+                                        TGridItem="Contact"
+                                        Align="Align.End">
+                            <FluentButton @onclick=@(() => OpenDialogAsync(contact))
+                                          IconStart=@(new Icons.Regular.Size20.Edit())/>
+
+                            <FluentButton @onclick=@(() => OnDeleteContact(contact))
+                                          IconStart="@(new Icons.Regular.Size20.Delete())"/>
+                        </TemplateColumn>
+                    </ChildContent>
+                </FluentDataGrid>
+            </FluentCard>
+        </div>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        StateAdapter.ConnectContainerState(PhoneBookContainer.ContactList);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+            await PhoneBookContainer.GetContacts();
+    }
+
+    private async Task OpenDialogAsync(Contact? contact)
+    {
+        var formValues = contact is not null
+            ? new Contact()
+            {
+                Address = contact.Address,
+                Company = contact.Company,
+                Id = contact.Id,
+                Telegram = contact.Telegram,
+                CreatedTimestamp = contact.CreatedTimestamp,
+                FullName = contact.FullName,
+                PhoneNumber = contact.PhoneNumber
+            }
+            : new Contact();
+        
+        var content = new ContactDialog.ContactDialogParams
+        {
+            Values = formValues,
+            SaveAsync = editedContact => PhoneBookContainer.CreateOrUpdateContact(editedContact, contact is not null)
+        };
+
+        var parameters = new DialogParameters<ContactDialog.ContactDialogParams>
+        {
+            Width = "600px",
+            Height = "500px",
+            Modal = true,
+            PreventScroll = true,
+            PrimaryAction = "Save",
+            TrapFocus = false
+        };
+
+        await DialogService.ShowDialogAsync<ContactDialog>(content, parameters);
+    }
+
+    private async Task OnDeleteContact(Contact contact)
+    {
+        var result = await DialogService.ShowConfirmationAsync(
+            message: "Are you sure you want to delete this contact?", 
+            title: "Deleting contact"
+        );
+        
+        var completed = await result.Result;
+
+        if (!completed.Cancelled)
+        {
+            await PhoneBookContainer.DeleteContact(contact);
+        }
+    }
+
+}

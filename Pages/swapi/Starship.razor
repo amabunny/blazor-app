@@ -1,0 +1,132 @@
+﻿@page "/swapi/starships/{Id}"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<FetchState FetcherFunctionAsync=@(() => SwapiService.GetStarshipAsync(Id, false))
+            Context="starshipPage"
+            LoadingChanged="StateHasChanged">
+    <BaseLayoutContent PageTitle="@starshipPage.Data?.Name"
+                       Loading="@starshipPage.Loading"
+                       BreadCrumbs="new[] { BreadcrumbsItems.Categories, BreadcrumbsItems.Starships }">
+        <Header>
+            @starshipPage.Data?.Name
+        </Header>
+
+        <ChildContent>
+            <EntityLayout>
+                <Grid TemplateColumns="auto 1fr" Gap="40">
+                    <DataItem AttributeName="Created"
+                              Value="@starshipPage.Data?.CreatedTime"
+                              Horizontal="true"
+                              Small="true"
+                              Loading="@starshipPage.Loading">
+                        @context?.ToString("y")
+                    </DataItem>
+
+                    <DataItem AttributeName="Edited"
+                              Value="@starshipPage.Data?.EditedTime"
+                              Horizontal="true"
+                              Small="true"
+                              Loading="@starshipPage.Loading">
+                        @context?.ToString("y")
+                    </DataItem>
+                </Grid>
+
+
+                <Grid TemplateColumns="1fr 1fr 1fr">
+                    <DataItem AttributeName="Manufacturer"
+                              Value="@starshipPage.Data?.Manufacturer"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Model"
+                              Value="@starshipPage.Data?.Model"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Name"
+                              Value="@starshipPage.Data?.Name"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Cargo capacity"
+                              Value="@starshipPage.Data?.CargoCapacity"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Consumables"
+                              Value="@starshipPage.Data?.Consumables"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Cost in credits"
+                              Value="@starshipPage.Data?.CostInCredits"
+                              Loading="@starshipPage.Loading">
+                        @SwapiUtils.FormatNumber(@context)
+                    </DataItem>
+
+                    <DataItem AttributeName="Crew"
+                              Value="@starshipPage.Data?.Crew"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Hyperdrive rating"
+                              Value="@starshipPage.Data?.HyperdriveRating"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Length"
+                              Value="@starshipPage.Data?.Length"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Max atmosphering speed"
+                              Value="@starshipPage.Data?.MaxAtmospheringSpeed"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="MGLT"
+                              Value="@starshipPage.Data?.Mglt"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Passangers"
+                              Value="@starshipPage.Data?.Passengers"
+                              Loading="@starshipPage.Loading"/>
+
+                    <DataItem AttributeName="Starship class"
+                              Value="@starshipPage.Data?.StarshipClass"
+                              Loading="@starshipPage.Loading"/>
+                </Grid>
+
+
+                <Grid TemplateColumns="auto 1fr" Gap="40">
+                    <DataItem AttributeName="Pilots"
+                              Value="@starshipPage.Data?.PilotsLoaded"
+                              Small="true"
+                              Hidden=@(starshipPage.Data?.PilotsLoaded?.Length == 0)
+                              Loading="@starshipPage.Loading">
+                        <ArrayChild Items="@context" Context="pilot">
+                            <div>
+                                <NavLink Href="@pilot.Uri">
+                                    @pilot.Name
+                                </NavLink>
+                            </div>
+                        </ArrayChild>
+                    </DataItem>
+
+                    <DataItem AttributeName="Films"
+                              Value="@starshipPage.Data?.FilmsLoaded"
+                              Small="true"
+                              Hidden=@(starshipPage.Data?.FilmsLoaded?.Length == 0)
+                              Loading="@starshipPage.Loading">
+                        <ArrayChild Items="@context" Context="film">
+                            <div>
+                                <NavLink Href="@film.Uri">
+                                    @film.Title
+                                </NavLink>
+                            </div>
+                        </ArrayChild>
+                    </DataItem>
+                </Grid>
+            </EntityLayout>
+        </ChildContent>
+    </BaseLayoutContent>
+</FetchState>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = "";
+
+}

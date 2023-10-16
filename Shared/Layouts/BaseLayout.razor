@@ -1,0 +1,69 @@
+﻿@using Vite.AspNetCore.Abstractions;
+@inherits LayoutComponentBase
+@namespace Star_Wars_DataBase.Shared.Layouts
+
+@* ReSharper disable Html.PathError *@
+
+<FluentLayout>
+    <FluentHeader Style="margin-bottom: 0;">
+        <Grid TemplateColumns="1fr auto" ElementWidth="100%">
+            <div>
+                Blazor and FluentUI Demo
+            </div>
+
+            <div>
+                <AuthorizeView>
+                    <Authorized Context="user">
+                        <Grid TemplateColumns="auto auto" Gap="10" AlignItems="GridJustifyItems.Center">
+                            Hello, @user.User.Identity?.Name!
+                            
+                            <form method="post" action="Identity/Account/Logout">
+                                <button type="submit"
+                                        class="logout">
+                                    Logout
+                                </button>
+                            </form>
+                        </Grid>
+                    </Authorized>
+
+                    <NotAuthorized>
+                        <div class="auth-links">
+                            <NavLink href="Identity/Account/Register">Register</NavLink> /
+                            <NavLink href="Identity/Account/Login">Log in</NavLink>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+        </Grid>
+    </FluentHeader>
+
+    <FluentStack Orientation="Orientation.Horizontal"
+                 Width="100%"
+                 Style="flex-grow: 1;"
+                 HorizontalGap="0">
+        <div class="menu">
+            <NavigationMenu/>
+        </div>
+
+        <FluentBodyContent Style="overflow-x: initial; overflow-y: initial">
+            @Body
+        </FluentBodyContent>
+    </FluentStack>
+
+    <FluentFooter Style="margin-top: 0;">
+        <div class="footer">
+            @_currentYear, Sergei Antipin
+        </div>
+    </FluentFooter>
+</FluentLayout>
+
+<FluentDialogProvider/>
+<FluentTooltipProvider/>
+<FluentToastContainer/>
+
+@code {
+    private readonly int _currentYear = DateTime.Now.Year;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

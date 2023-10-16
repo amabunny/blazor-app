@@ -1,0 +1,146 @@
+﻿@page "/swapi/people/{Id}"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<FetchState @bind-Data="_person"
+            @bind-Loading="_loading"
+            FetcherFunctionAsync=@(() => SwapiService.GetPersonAsync(Id, false))/>
+
+<BaseLayoutContent Loading="_loading"
+                   PageTitle="@_person.Name"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories, BreadcrumbsItems.People }">
+    <Header>
+        @_person.Name
+    </Header>
+
+    <ChildContent>
+        <EntityLayout>
+            <Grid TemplateColumns="auto 1fr" AlignItems="GridJustifyItems.Start" Gap="40">
+                <DataItem AttributeName="Created"
+                          Value="_person.CreatedTime"
+                          Loading="_loading"
+                          Small="true"
+                          Horizontal="true">
+                    @context.ToString("y")
+                </DataItem>
+
+                <DataItem AttributeName="Edited"
+                          Value="_person.EditedTime"
+                          Loading="_loading"
+                          Small="true"
+                          Horizontal="true">
+                    @context.ToString("y")
+                </DataItem>
+            </Grid>
+
+            <Grid TemplateColumns="1fr 1fr 1fr" Gap="40">
+                <DataItem AttributeName="Name"
+                          Value="_person.Name"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Height"
+                          Value="_person.Height"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Gender"
+                          Value="_person.Gender"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Mass"
+                          Value="_person.Mass"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Hair color"
+                          Value="_person.HairColor"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Skin color"
+                          Value="_person.SkinColor"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Eye color"
+                          Value="_person.EyeColor"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Birth year"
+                          Value="_person.BirthYear"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Homeworld"
+                          Value="_person.HomeworldLoaded"
+                          Loading="_loading">
+                    <NavLink Href=@context?.Uri>
+                        @context?.Name
+                    </NavLink>
+                </DataItem>
+            </Grid>
+
+            <Grid TemplateColumns="1fr 1fr 1fr 1fr" Gap="40">
+                <DataItem AttributeName="Films"
+                          Value="_person.FilmsLoaded"
+                          Loading="_loading"
+                          Hidden="_person.FilmsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="film">
+                        <div>
+                            <NavLink Href="@film.Uri">
+                                @film.Title
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Species"
+                          Value="_person.SpeciesLoaded"
+                          Loading="_loading"
+                          Hidden="_person.SpeciesLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="spec">
+                        <div>
+                            <NavLink Href="@spec?.Uri">
+                                @spec?.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Starships"
+                          Value="_person.StarshipsLoaded"
+                          Loading="_loading"
+                          Hidden="_person.StarshipsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="starship">
+                        <div>
+                            <NavLink Href="@starship.Uri">
+                                @starship.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Vehicles"
+                          Value="_person.VehiclesLoaded"
+                          Loading="_loading"
+                          Hidden="_person.VehiclesLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="vehicle">
+                        <div>
+                            <NavLink Href="@vehicle.Uri">
+                                @vehicle.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+            </Grid>
+        </EntityLayout>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private bool _loading;
+    private PersonDto _person = new();
+}

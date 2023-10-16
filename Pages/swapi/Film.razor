@@ -1,0 +1,148 @@
+﻿@page "/swapi/films/{Id}"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<FetchState FetcherFunctionAsync="@(() => SwapiService.GetFilmAsync(Id, false))"
+            @bind-Loading="_loading"
+            @bind-Data="_data"/>
+
+<BaseLayoutContent PageTitle="@_data.Title"
+                   Loading="_loading"
+                   BreadCrumbs=@(new[] { BreadcrumbsItems.Categories, BreadcrumbsItems.Films })>
+    <Header>
+        @_data.Title
+    </Header>
+
+    <ChildContent>
+        <EntityLayout>
+            <Grid TemplateColumns="auto 1fr" Gap="40">
+                <DataItem AttributeName="Created"
+                          Value="_data.CreatedTime"
+                          Loading="_loading"
+                          Small="true"
+                          Horizontal="true">
+                    @context.ToString("y")
+                </DataItem>
+
+                <DataItem AttributeName="Edited"
+                          Value="_data.EditedTime"
+                          Loading="_loading"
+                          Small="true"
+                          Horizontal="true">
+                    @context.ToString("y")
+                </DataItem>
+            </Grid>
+
+            <Grid TemplateColumns="auto 1fr" Gap="100">
+                <DataItem AttributeName="Opening crawl"
+                          Value="_data.OpeningCrawl"
+                          Loading="_loading">
+                    <div style="white-space: pre-line;">
+                        @context
+                    </div>
+                </DataItem>
+                
+                <Grid TemplateRows="auto auto auto 1fr">
+                    <DataItem AttributeName="Episode"
+                              Value="_data.EpisodeId"
+                              Loading="_loading"/>
+                    
+                    <DataItem AttributeName="Director"
+                              Value="_data.Director"
+                              Loading="_loading"/>
+
+                    <DataItem AttributeName="Producer"
+                              Value="_data.Producer"
+                              Loading="_loading"/>
+
+                    <DataItem AttributeName="Release date"
+                              Value="_data.ReleaseDateTime"
+                              Loading="_loading">
+                        @context.ToString("y")
+                    </DataItem>
+                </Grid>
+            </Grid>
+
+            <Grid TemplateColumns="1fr 1fr 1fr 1fr 1fr" Gap="40">
+                <DataItem AttributeName="Planets"
+                          Value="_data.PlanetsLoaded"
+                          Loading="_loading"
+                          Hidden="_data.PlanetsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="planetDto">
+                        <div>
+                            <NavLink Href="@planetDto.Uri">
+                                @planetDto.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Species"
+                          Value="_data.SpeciesLoaded"
+                          Loading="_loading"
+                          Hidden="_data.SpeciesLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="specDto">
+                        <div>
+                            <NavLink Href="@specDto.Uri">
+                                @specDto.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Characters"
+                          Value="_data.CharactersLoaded"
+                          Loading="_loading"
+                          Hidden="_data.CharactersLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="personDto">
+                        <div>
+                            <NavLink Href="@personDto.Uri">
+                                @personDto.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Starships"
+                          Value="_data.StarshipsLoaded"
+                          Loading="_loading"
+                          Hidden="_data.StarshipsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="starship">
+                        <div>
+                            <NavLink Href="@starship.Uri">
+                                @starship.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Vehicles"
+                          Value="_data.VehiclesLoaded"
+                          Loading="_loading"
+                          Hidden="_data.VehiclesLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="vehicleDto">
+                        <div>
+                            <NavLink Href="@vehicleDto.Uri">
+                                @vehicleDto.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+            </Grid>
+        </EntityLayout>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private bool _loading;
+    private FilmDto _data = new();
+}

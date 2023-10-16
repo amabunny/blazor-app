@@ -1,0 +1,111 @@
+﻿@page "/swapi/planets/{Id}"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<FetchState FetcherFunctionAsync=@(() => SwapiService.GetPlanetAsync(Id, false)) @bind-Loading="_loading"
+            @bind-Data="_planet"/>
+
+<BaseLayoutContent PageTitle="@_planet.Name"
+                   Loading="_loading"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories, BreadcrumbsItems.Planets }">
+    <Header>
+        @_planet.Name
+    </Header>
+
+    <ChildContent>
+        <EntityLayout>
+            <Grid TemplateColumns="auto 1fr" Gap="40">
+                <DataItem Loading="_loading"
+                          AttributeName="Created"
+                          Value="_planet.CreatedTime"
+                          Horizontal="true"
+                          Small="true">
+                    @context.ToString("y")
+                </DataItem>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Edited"
+                          Value="_planet.EditedTime"
+                          Horizontal="true"
+                          Small="true">
+                    @context.ToString("y")
+                </DataItem>
+            </Grid>
+
+
+            <Grid TemplateColumns="1fr 1fr 1fr">
+                <DataItem Loading="_loading"
+                          AttributeName="Climate"
+                          Value="_planet.Climate"/>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Diameter"
+                          Value="_planet.Diameter"/>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Gravity"
+                          Value="_planet.Gravity"/>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Orbital period"
+                          Value="_planet.OrbitalPeriod"/>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Population"
+                          Value="_planet.Population"/>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Rotation period"
+                          Value="_planet.RotationPeriod"/>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Surface water"
+                          Value="_planet.SurfaceWater"/>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Terrain"
+                          Value="_planet.Terrain"/>
+            </Grid>
+
+
+            <Grid TemplateColumns="auto 1fr" Gap="40">
+                <DataItem Loading="_loading"
+                          AttributeName="Residents"
+                          Value="_planet.ResidentsLoaded"
+                          Hidden="_planet.ResidentsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="resident">
+                        <NavLink Href="@resident.Uri">
+                            <div>
+                                @resident.Name
+                            </div>
+                        </NavLink>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem Loading="_loading"
+                          AttributeName="Films"
+                          Value="_planet.FilmsLoaded"
+                          Hidden="_planet.FilmsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="film">
+                        <NavLink Href="@film.Uri">
+                            <div>
+                                @film.Title
+                            </div>
+                        </NavLink>
+                    </ArrayChild>
+                </DataItem>
+            </Grid>
+        </EntityLayout>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private bool _loading;
+    private PlanetDto _planet = new();
+}

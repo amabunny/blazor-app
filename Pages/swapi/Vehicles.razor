@@ -1,0 +1,49 @@
+﻿@page "/swapi/vehicles"
+@inject SwapiService SwapiService;
+@layout BaseLayout
+
+<BaseLayoutContent PageTitle="Vehicles"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories }">
+    <Header>
+        Vehicles
+    </Header>
+
+    <ChildContent>
+        <EntitiesTable FetchList="SwapiService.GetVehiclesAsync"
+                       Context="entityTable">
+            <FluentDataGrid Items="@entityTable" GridTemplateColumns="1fr 1fr 150px 170px 100px">
+                <ChildContent>
+                    <PropertyColumn Property="v => v.Name"
+                                    TProp="string"
+                                    TGridItem="VehicleDto"/>
+
+                    <PropertyColumn Property="v => v.Manufacturer"
+                                    TProp="string"
+                                    TGridItem="VehicleDto"/>
+
+                    <PropertyColumn Property="v => v.CostInCredits"
+                                    TProp="string"
+                                    TGridItem="VehicleDto"
+                                    Title="Cost in credits"/>
+
+                    <PropertyColumn Property="v => v.VehicleClass"
+                                    Title="Vehicle class"
+                                    TProp="string"
+                                    TGridItem="VehicleDto"/>
+
+                    <TemplateColumn Title="Actions"
+                                    Align="@Align.End"
+                                    TGridItem="VehicleDto">
+                        <NavigateActionButton Uri=@($"swapi/vehicles/{context.Id}")/>
+                    </TemplateColumn>
+                </ChildContent>
+
+                <EmptyContent/>
+            </FluentDataGrid>
+        </EntitiesTable>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+}

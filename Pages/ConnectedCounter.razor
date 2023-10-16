@@ -1,0 +1,125 @@
+@using Star_Wars_DataBase.Shared.CounterWithDifferentScopes
+@using Star_Wars_DataBase.Data.CustomEvents.CounterComponent.OnCounterValueChanged
+@page "/connected-counter"
+@layout BaseLayout
+@inherits BlazorStateComponent
+@inject CounterWithDifferentScopesContainer Container
+
+<BaseLayoutContent PageTitle="Blazor state implementation">
+    <Header>
+        Blazor state implementation
+    </Header>
+
+    <ChildContent>
+        <div class="broken-fluent-reason">
+            <FluentTabs>
+                <FluentTab Label="Shared container example"
+                           Icon="@(new Icons.Regular.Size24.LeafOne())" Id="tab-1">
+                    <DataItem
+                        Value="Container.CounterValue.Value"
+                        AttributeName="Current state injected directly in page"
+                        Horizontal="true"/>
+
+                    <p>
+                        P.S. Go to other pages and see that the state saved
+                    </p>
+
+                    <FluentButton @onclick="Container.Increment">
+                        Increment
+                    </FluentButton>
+
+                    <FluentButton @onclick="Container.Decrement">
+                        Decrement
+                    </FluentButton>
+                    
+                    <FluentButton @onclick="PerformHugeIncrement" Appearance="Appearance.Accent">
+                        Perform huge increment (on your own risk, you might kill your browser :))
+                    </FluentButton>
+
+                    <br/>
+
+                    <br/>
+
+                    <FluentTextField Value="@Container.CounterValue.Value.ToString()"/>
+
+                    <FluentNumberField @bind-Value="Container.CounterValue.Value"/>
+
+                    <Grid AutoFlow="row" Gap="40">
+                        <div>
+                            <br/>
+                            <h4> Page children components </h4>
+                            <FluentDivider Style="width: 40%;"/>
+                        </div>
+
+                        <Counter1/>
+
+                        <FluentSwitch @bind-Value="@Counter2Visible">
+                            Counter 2 visible
+                        </FluentSwitch>
+                        
+                        @if (Counter2Visible)
+                        {
+                            <Counter2/>
+                        }
+                        
+                        <div>
+                            <counter-component
+                                value="@Container.CounterValue.Value"
+                                @oncountervaluechanged="OnCounterChanged">
+                                <div slot="children">
+                                    Passed <b>Blazor</b> children through slot
+                                </div>
+                                <div slot="icon">
+                                    <FluentIcon Icon="Icons.Regular.Size28.PlugDisconnected"/>
+                                </div>
+                            </counter-component>
+                        </div>
+                    </Grid>
+                </FluentTab>
+
+                <FluentTab Label="Implementation scheme"
+                           Id="tab-2"
+                           Icon="@(new Icons.Regular.Size24.Map())">
+                    <br/>
+
+                    <div>
+                        <h4>The diagram below shows how everything works under the hood.</h4>
+                    </div>
+
+                    <img src="images/state-scheme.png" style="max-width: 100%" alt="State scheme"/>
+                </FluentTab>
+            </FluentTabs>
+        </div>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+    private bool Counter2Visible { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        StateAdapter
+            .ConnectContainerState(Container.CounterValue);
+    }
+
+    protected void PerformHugeIncrement()
+    {
+        int[] iterations = new int[999999];
+        foreach (var _ in iterations)
+        {
+            Container.Increment();
+        }
+    }
+
+    protected void OnCounterChanged(CounterComponentChangedArgs args)
+    {
+        if (args.Increment == true)
+            Container.Increment();
+        else 
+            Container.Decrement();
+    }
+
+}

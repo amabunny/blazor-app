@@ -1,0 +1,45 @@
+﻿.attribute-name {
+    font-weight: bold;
+    font-size: .9em;
+    margin-bottom: 10px;
+}
+
+.value {
+    font-size: 1.2em;
+}
+
+.data-item {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.data-item.small {
+    font-size: .95em;
+    padding: 10px 0;
+}
+
+.data-item.small .attribute-name {
+    margin-bottom: 0;
+}
+
+.data-item.horizontal {
+    flex-direction: row;
+    gap: 5px;
+}
+
+.data-item.horizontal.small {
+    font-size: .85em;
+}
+
+.data-item.horizontal .attribute-name {
+    font-size: 1.2em;
+}
+
+.data-item ::deep a {
+    text-decoration: none;
+}
+
+.data-item ::deep a:hover {
+    text-decoration: underline;
+}

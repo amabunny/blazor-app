@@ -1,0 +1,39 @@
+﻿@page "/swapi/planets"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<BaseLayoutContent PageTitle="Planets"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories }">
+    <Header>
+        Planets
+    </Header>
+
+    <ChildContent>
+        <EntitiesTable FetchList="SwapiService.GetPlanetsAsync">
+            <FluentDataGrid Items="@context" GridTemplateColumns="1fr 1fr 150px 300px 100px">
+                <ChildContent>
+                    <PropertyColumn Property="@(p => p.Name)"/>
+
+                    <PropertyColumn Property="@(p => p.Population)"/>
+
+                    <PropertyColumn Property="@(p => p.SurfaceWater)"
+                                    Title="Surface water"/>
+
+                    <PropertyColumn Property="@(p => p.Terrain)"/>
+
+                    <TemplateColumn Context="row"
+                                    Title="Actions"
+                                    Align="Align.End"
+                                    TGridItem="PlanetDto">
+                        <NavigateActionButton Uri=@($"swapi/planets/{row.Id}")/>
+                    </TemplateColumn>
+                </ChildContent>
+
+                <EmptyContent/>
+            </FluentDataGrid>
+        </EntitiesTable>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+}

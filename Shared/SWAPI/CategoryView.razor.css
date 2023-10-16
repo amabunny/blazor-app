@@ -1,0 +1,20 @@
+﻿.category-view {
+    padding: 15px;
+    transition: .5s;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    & svg {
+        width: 48px !important;
+    }
+
+    &:hover {
+        background-color: var(--accent-fill-hover);
+        color: white;
+
+        & svg {
+            fill: white !important;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.breadcrumbs {
+
+}
+
+.breadcrumbs ::deep a {
+    text-decoration: none;
+}
+
+.breadcrumbs ::deep a:hover {
+    text-decoration: underline;
+}

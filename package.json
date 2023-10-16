@@ -1,0 +1,47 @@
+{
+  "name": "vite-net",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "watch": "concurrently --raw --kill-signal=SIGKILL --kill-others --handle-input --default-input-target=1 \"yarn dev\" \"WITH_DEV_SERVER=1 dotnet watch\"",
+    "build": "tsc && vite build && dotnet publish --self-contained --configuration=Release",
+    "start": "cd ./bin/Release/net7.0/osx-arm64/publish && ASPNETCORE_URLS=http://0.0.0.0 dotnet ./Star_Wars_DataBase.dll"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.10",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "effector-logger": "^0.14.1",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "prettier": "^3.0.3",
+    "sass": "^1.65.1",
+    "semver": "^7.5.4",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.11"
+  },
+  "dependencies": {
+    "@farfetched/core": "^0.10.1",
+    "@farfetched/runtypes": "^0.10.1",
+    "@fluentui/react": "^8.112.1",
+    "@r2wc/react-to-web-component": "^2.0.3",
+    "@vitejs/plugin-react": "^4.0.3",
+    "concurrently": "^8.2.1",
+    "effector": "^22.8.7",
+    "effector-react": "^22.5.4",
+    "keycode": "^2.2.1",
+    "patronum": "^1.19.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "runtypes": "^6.7.0"
+  }
+}

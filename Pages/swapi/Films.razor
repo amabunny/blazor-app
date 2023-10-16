@@ -1,0 +1,46 @@
+﻿@page "/swapi/films"
+@layout BaseLayout
+@inject SwapiService SwapiService
+
+<BaseLayoutContent PageTitle="Films"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories }">
+    <Header>
+        Films
+    </Header>
+
+    <ChildContent>
+        <EntitiesTable FetchList="SwapiService.GetFilmsAsync">
+            <FluentDataGrid Items="@context"
+                            TGridItem="FilmDto"
+                            ResizableColumns="true"
+                            GridTemplateColumns="100px 220px 1fr 130px 100px">
+                <ChildContent>
+                    <PropertyColumn Property=@(f => f!.EpisodeId)
+                                    Title="Episode"/>
+
+                    <PropertyColumn Property="@(f => f!.Title)"/>
+
+                    <PropertyColumn Property="@(f => f!.Producer)"
+                                    Align="Align.Start"/>
+
+                    <TemplateColumn Title="Release date" Context="data">
+                        @data!.ReleaseDateTime.ToString("y")
+                    </TemplateColumn>
+
+                    <TemplateColumn Title="Actions"
+                                    Context="film"
+                                    Align="Align.End"
+                                    TGridItem="FilmDto">
+                        <NavigateActionButton Uri=@($"swapi/films/{film.Id}")/>
+                    </TemplateColumn>
+                </ChildContent>
+
+                <EmptyContent/>
+            </FluentDataGrid>
+        </EntitiesTable>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+}

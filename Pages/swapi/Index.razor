@@ -1,0 +1,113 @@
+﻿@page "/swapi"
+@inject SwapiService SwapiService
+@namespace Star_Wars_DataBase.Pages.swapi.IndexPage
+@layout BaseLayout
+
+<FetchState FetcherFunctionAsync="SwapiService.GetCategoriesAsync"
+            Context="categories"
+            @bind-Loading="_loading"
+            @bind-Data="_categoriesDto">
+    <BaseLayoutContent PageTitle="SWAPI Categories">
+        <Header>
+            SWAPI Categories
+        </Header>
+
+        <ChildContent>
+            <Grid TemplateColumns="700px">
+                <p>
+                    <i> A long time ago in a galaxy far, far away... </i>
+                </p>
+
+                <p>
+                    Hello! That's a little wiki created by me about Star Wars Galaxy! It uses
+                    <a href="https://swapi.dev/" target="_blank">SWAPI.dev</a> to collect data, caches and storages it on .net server.
+                    Here you can see the categories of articles about the Star Wars Galaxy. Each category have a list
+                    with entities and entity page with detailed information about unit.
+                </p>
+            </Grid>
+
+            <FluentGrid Spacing="3">
+                <ArrayChild Items="@Categories" Context="category">
+                    <CategoryView Icon="@category.Icon"
+                                  BlazorUrl="@category.BlazorUrl"
+                                  Loading="_loading"
+                                  Name="@category.Name"
+                                  SwapiUrl="@category.SwapiUrl"/>
+                </ArrayChild>
+            </FluentGrid>
+        </ChildContent>
+    </BaseLayoutContent>
+</FetchState>
+
+<style>
+    p {
+        font-size: 1.2em;
+    }
+</style>
+
+@code {
+
+    struct CategoryView
+    {
+        public string SwapiUrl;
+        public string BlazorUrl;
+        public string Name;
+        public Icon Icon;
+    }
+
+    private bool _loading = true;
+    private CategoriesDto _categoriesDto = new();
+
+    private CategoryView[] Categories
+    {
+        get
+        {
+            return new CategoryView[]
+            {
+                new()
+                {
+                    SwapiUrl = _categoriesDto.People,
+                    Name = "People",
+                    BlazorUrl = "swapi/people",
+                    Icon = new Icons.Regular.Size24.People(),
+                },
+                new()
+                {
+                    SwapiUrl = _categoriesDto.Planets,
+                    Name = "Planets",
+                    BlazorUrl = "swapi/planets",
+                    Icon = new Icons.Regular.Size24.Globe()
+                },
+                new()
+                {
+                    SwapiUrl = _categoriesDto.Species,
+                    Name = "Species",
+                    BlazorUrl = "swapi/species",
+                    Icon = new Icons.Filled.Size24.RectangleLandscapeHintCopy()
+                },
+                new()
+                {
+                    SwapiUrl = _categoriesDto.Starships,
+                    Name = "Starships",
+                    BlazorUrl = "swapi/starships",
+                    Icon = new Icons.Filled.Size24.VehicleShip()
+                },
+                new()
+                {
+                    SwapiUrl = _categoriesDto.Vehicles,
+                    Name = "Vehicles",
+                    BlazorUrl = "swapi/vehicles",
+                    Icon = new Icons.Filled.Size24.VehicleCar(),
+                },
+                new()
+                {
+                    SwapiUrl = _categoriesDto.Films,
+                    Name = "Films",
+                    BlazorUrl = "swapi/films",
+                    Icon = new Icons.Regular.Size24.Video()
+                }
+            };
+        }
+    }
+
+}

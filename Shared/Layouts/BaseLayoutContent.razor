@@ -1,0 +1,79 @@
+﻿@namespace Star_Wars_DataBase.Shared.Layouts
+
+<PageTitle>
+    @if (PageTitle?.Length > 0)
+    {
+        @($"{PageTitle} | ")
+    }
+    Blazor Web App
+</PageTitle>
+
+<div class="body">
+    <Grid TemplateRows="auto auto 1fr" Height="100%">
+        <Grid TemplateColumns="auto 1fr auto" Class="header-columns" AlignItems="GridJustifyItems.Center" Gap="5">
+            <BackHeaderLink Href="@BackUrl">
+                @if (Loading)
+                {
+                    <FluentSkeleton Height="60px" Shimmer="true" Width="150px"/>
+                }
+                else
+                {
+                    @if (BreadCrumbs != null)
+                    {
+                        <BreadCrumbsComponent Entries="BreadCrumbs"/>
+                    }
+                }
+            </BackHeaderLink>
+
+            <h1 class="header">
+                @Header
+            </h1>
+
+            <div>
+                @RightHeaderAddon
+            </div>
+        </Grid>
+
+        <FluentDivider Class="divider"/>
+
+        <div class="scroll">
+            <div class="content-layer">
+                <ErrorBoundary>
+                    <ChildContent>
+                        @ChildContent
+                    </ChildContent>
+
+                    <ErrorContent Context="ex">
+                        @ex.Message
+                    </ErrorContent>
+                </ErrorBoundary>
+            </div>
+        </div>
+    </Grid>
+</div>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public string? PageTitle { get; set; } = "";
+
+    [Parameter]
+    public BreadcrumbsItems[]? BreadCrumbs { get; set; }
+
+    [Parameter]
+    public string? BackUrl { get; set; }
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? RightHeaderAddon { get; set; }
+
+    [Parameter]
+    public bool Loading { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

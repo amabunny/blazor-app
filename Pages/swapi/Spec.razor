@@ -1,0 +1,120 @@
+﻿@page "/swapi/species/{Id}"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<FetchState FetcherFunctionAsync=@(() => SwapiService.GetSpecAsync(Id, false)) @bind-Loading="_loading"
+            @bind-Data="_spec"/>
+
+<BaseLayoutContent Loading="_loading"
+                   PageTitle="Species"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories, BreadcrumbsItems.Species }">
+    <Header>
+        @_spec.Name
+    </Header>
+
+    <ChildContent>
+        <EntityLayout>
+            <Grid TemplateColumns="auto 1fr" Gap="40">
+                <DataItem AttributeName="Created"
+                          Value="_spec.CreatedTime"
+                          Loading="_loading"
+                          Horizontal="true"
+                          Small="true">
+                    @context.ToString("y")
+                </DataItem>
+
+                <DataItem AttributeName="Edited"
+                          Value="_spec.EditedTime"
+                          Loading="_loading"
+                          Horizontal="true"
+                          Small="true">
+                    @context.ToString("y")
+                </DataItem>
+            </Grid>
+
+
+            <Grid TemplateColumns="1fr 1fr 1fr">
+                <DataItem AttributeName="AverageHeight"
+                          Value="_spec.AverageHeight"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Average lifespan"
+                          Value="_spec.AverageLifespan"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Classification"
+                          Value="_spec.Classification"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Designation"
+                          Value="_spec.Designation"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Eye colors"
+                          Value="_spec.EyeColors"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Hair colors"
+                          Value="_spec.HairColors"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Homeworld"
+                          Value="_spec.HomeworldLoaded"
+                          Loading="_loading"
+                          Hidden="_spec.HomeworldUri?.Length == 0">
+                    <NavLink Href="@context?.Uri">
+                        @context?.Name
+                    </NavLink>
+                </DataItem>
+
+                <DataItem AttributeName="Language"
+                          Value="_spec.Language"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Skin colors"
+                          Value="_spec.SkinColors"
+                          Loading="_loading"/>
+            </Grid>
+
+
+            <Grid TemplateColumns="auto 1fr" Gap="40">
+                <DataItem AttributeName="Films"
+                          Value="_spec.FilmsLoaded"
+                          Loading="_loading"
+                          Hidden="_spec.FilmsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="film">
+                        <div>
+                            <NavLink Href=@film.Uri>
+                                @film.Title
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="People"
+                          Value="_spec.PeopleLoaded"
+                          Loading="_loading"
+                          Hidden="_spec.PeopleLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="person">
+                        <div>
+                            <NavLink Href=@person.Uri>
+                                @person.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+            </Grid>
+        </EntityLayout>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private bool _loading;
+    private SpecDto _spec = new SpecDto();
+}

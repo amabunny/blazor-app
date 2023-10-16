@@ -1,0 +1,38 @@
+﻿.footer {
+    height: 40px;
+    color: white;
+    text-align: center;
+    background: var(--neutral-foreground-rest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu {
+    height: 100%;
+    padding: 20px 15px;
+    background: var(--neutral-layer-2);
+}
+
+.logout {
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: white;
+    text-decoration: underline;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.auth-links {
+    & > a {
+        color: white;
+        font-weight: normal;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

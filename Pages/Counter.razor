@@ -1,0 +1,26 @@
+﻿@page "/counter"
+@layout BaseLayout
+
+<BaseLayoutContent PageTitle="Counter">
+    <Header>
+        Counter
+    </Header>
+
+    <ChildContent>
+        <DataItem AttributeName="Current count"
+                  Value="_currentCount"
+                  Horizontal="true"/>
+
+        <FluentButton @onclick="IncrementCount">Click me</FluentButton>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+    private int _currentCount;
+
+    private void IncrementCount()
+    {
+        _currentCount++;
+    }
+
+}

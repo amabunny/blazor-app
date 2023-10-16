@@ -1,0 +1,133 @@
+﻿@namespace Star_Wars_DataBase.Shared.UI
+
+<div class=@CN.Create("grid", Class) style="@StyleAttrs()">
+    @ChildContent
+</div>
+
+<style>
+    .grid {
+        display: grid;
+    }
+</style>
+
+@code {
+
+    [Parameter]
+    public string TemplateColumns { get; set; } = "auto";
+
+    [Parameter]
+    public string TemplateRows { get; set; } = "auto";
+
+    [Parameter]
+    public string Height { get; set; } = "auto";
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string ElementWidth { get; set; } = "auto";
+
+    [Parameter]
+    public string AutoFlow { get; set; } = "initial";
+
+    [Parameter]
+    public int Gap { get; set; } = 0;
+
+    [Parameter]
+    public GridJustifyItems AlignItems { get; set; } = GridJustifyItems.Initial;
+
+    [Parameter]
+    public GridJustifyItems JustifyItems { get; set; } = GridJustifyItems.Initial;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string StyleAttrs()
+    {
+        var style = new List<List<string>>
+        {
+            new()
+            {
+                "grid-template-columns", TemplateColumns,
+            },
+            new()
+            {
+                "grid-template-rows", TemplateRows,
+            },
+            new()
+            {
+                "grid-gap", Gap.ToString() + "px",
+            },
+            new()
+            {
+                "align-items", AlignItems switch
+                {
+                    GridJustifyItems.Baseline => "baseline",
+                    GridJustifyItems.Center => "center",
+                    GridJustifyItems.End => "end",
+                    GridJustifyItems.FirstBaseline => "first baseline",
+                    GridJustifyItems.FlexEnd => "flex-end",
+                    GridJustifyItems.FlexStart => "flex-start",
+                    GridJustifyItems.Inherit => "inherit",
+                    GridJustifyItems.Initial => "initial",
+                    GridJustifyItems.LastBaseline => "last baseline",
+                    GridJustifyItems.Left => "left",
+                    GridJustifyItems.Normal => "normal",
+                    GridJustifyItems.Revert => "revert",
+                    GridJustifyItems.Right => "right",
+                    GridJustifyItems.SafeCenter => "safe center",
+                    GridJustifyItems.SelfEnd => "self-end",
+                    GridJustifyItems.SelfStart => "self-start",
+                    GridJustifyItems.Start => "start",
+                    GridJustifyItems.Stretch => "stretch",
+                    GridJustifyItems.UnsafeCenter => "unsafe center",
+                    GridJustifyItems.Unset => "unset",
+                    _ => "auto"
+                    },
+            },
+            new()
+            {
+                "justify-items", JustifyItems switch
+                {
+                    GridJustifyItems.Baseline => "baseline",
+                    GridJustifyItems.Center => "center",
+                    GridJustifyItems.End => "end",
+                    GridJustifyItems.FirstBaseline => "first baseline",
+                    GridJustifyItems.FlexEnd => "flex-end",
+                    GridJustifyItems.FlexStart => "flex-start",
+                    GridJustifyItems.Inherit => "inherit",
+                    GridJustifyItems.Initial => "initial",
+                    GridJustifyItems.LastBaseline => "last baseline",
+                    GridJustifyItems.Left => "left",
+                    GridJustifyItems.Normal => "normal",
+                    GridJustifyItems.Revert => "revert",
+                    GridJustifyItems.Right => "right",
+                    GridJustifyItems.SafeCenter => "safe center",
+                    GridJustifyItems.SelfEnd => "self-end",
+                    GridJustifyItems.SelfStart => "self-start",
+                    GridJustifyItems.Start => "start",
+                    GridJustifyItems.Stretch => "stretch",
+                    GridJustifyItems.UnsafeCenter => "unsafe center",
+                    GridJustifyItems.Unset => "unset",
+                    _ => "auto"
+                    }
+            },
+            new()
+            {
+                "height", Height
+            },
+            new()
+            {
+                "width", ElementWidth
+            },
+            new()
+            {
+                "grid-auto-flow", AutoFlow
+            }
+        };
+
+        var propertiesArray = style.ConvertAll(property => string.Join(": ", property));
+        return string.Join("; ", propertiesArray);
+    }
+
+}

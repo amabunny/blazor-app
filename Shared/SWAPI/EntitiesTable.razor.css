@@ -1,0 +1,28 @@
+﻿.container {
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+
+    .paginator-nav {
+        background: transparent;
+    }
+}
+
+.container ::deep [role="gridcell"] {
+    font-size: 1.1em;
+}
+
+.container ::deep [role="row"] [role="gridcell"]:not(:last-child) {
+    &:after {
+        content: "";
+        display: inline-block;
+        width: 0;
+        height: 100%;
+        vertical-align: middle;
+    }
+}
+
+.container ::deep [role="columnheader"] {
+    height: 40px;
+}

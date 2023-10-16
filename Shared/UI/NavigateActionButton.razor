@@ -1,0 +1,12 @@
+﻿@namespace Star_Wars_DataBase.Shared.SWAPI
+
+<NavLink Href=@Uri>
+    <FluentButton IconEnd="new Icons.Regular.Size16.ArrowForward()" />
+</NavLink>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string? Uri { get; set; }
+}
+

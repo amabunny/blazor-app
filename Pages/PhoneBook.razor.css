@@ -1,0 +1,17 @@
+.child-content ::deep .header {
+    position: sticky;
+    top: 0;
+    background: white;
+}
+
+.child-content ::deep [role="row"] [role="gridcell"]:not(:last-child):after {
+    content: "";
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.child-content ::deep [role="columnheader"] {
+    height: 40px;
+}

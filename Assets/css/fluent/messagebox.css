@@ -1,0 +1,24 @@
+fluent-dialog {
+    &.fluent-dialog-main {
+        [typo="pane-header"] {
+            font-size: 18px !important;
+        }
+    }
+    
+    .fluent-messagebox {
+        background: inherit !important;
+        min-height: auto !important;
+        
+        & > .stack-horizontal {
+            .icon {
+                width: 45px !important;
+                margin-right: 13px;
+            }
+            
+            & > *:nth-child(2) {
+                font-size: 1.2em;
+                font-weight: 500;
+            }
+        }
+    }
+}

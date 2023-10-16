@@ -1,0 +1,87 @@
+@using Star_Wars_DataBase.Data.PhoneBook
+@using Star_Wars_DataBase.Data.CustomEvents.Fluent.MaskComponent.OnMaskValueChanged
+@using Star_Wars_DataBase.Data.CustomEvents.Fluent.TextSuggestions.OnTextSuggestionChanged
+@namespace Star_Wars_DataBase.Shared.PhoneBook.ContactDialog
+@implements IDialogContentComponent<ContactDialog.ContactDialogParams>
+
+<FluentDialogHeader>
+    Create a new contact
+</FluentDialogHeader>
+
+<FluentDialogBody>
+    <Grid Gap="20">
+        <Grid Gap="30">
+            <initials-suggestion-component label="Full name:" 
+                                           value="@Content.Values.FullName"
+                                           placeholder="Enter name"
+                                           free-input-allowed="true"
+                                           @ontextsuggestionchanged="fullName => Content.Values.FullName = fullName.Value"/>
+        </Grid>
+        
+        <Grid Gap="20">
+            <company-suggestion-component label="Company:"
+                                          value="@Content.Values.Company"
+                                          placeholder="Enter company name"
+                                          @ontextsuggestionchanged="company => Content.Values.Company = company.Value"/>
+        </Grid>
+
+        <Grid>
+            <address-suggestion-component label="Address:" 
+                                          value="@Content.Values.Address"
+                                          placeholder="Start to type address here..."
+                                          @ontextsuggestionchanged="address => Content.Values.Address = address.Value"/>
+        </Grid>
+        
+        <Grid TemplateColumns="140px 240px" Gap="30" AlignItems="GridJustifyItems.Center">
+            <fluent-input-mask-component label="Phone number:"
+                                         mask="+7 (999) 999 99 99"
+                                         value="@Content.Values.PhoneNumber.Replace("+7 ", "")"
+                                         @onmaskvaluechanged="phone => Content.Values.PhoneNumber = phone.Value"/>
+
+            <FluentTextField 
+                @bind-Value="@Content.Values.Telegram" 
+                Placeholder="Link to telegram account" 
+                Style="position: relative; bottom: -4px;">
+                Telegram:
+            </FluentTextField>
+        </Grid>
+    </Grid>
+</FluentDialogBody>
+
+<FluentDialogFooter>
+    <FluentButton @onclick=SaveAsync
+                  Appearance="Appearance.Accent">
+        Save
+    </FluentButton>
+
+    <FluentButton @onclick=CloseAsync>
+        Cancel
+    </FluentButton>
+</FluentDialogFooter>
+
+@code {
+
+    public class ContactDialogParams
+    {
+        public required Func<Contact, Task> SaveAsync { get; set; }
+        public required Contact Values { get; set; }
+    }
+
+    [Parameter]
+    public required ContactDialogParams Content { get; set; }
+
+    [CascadingParameter]
+    public required FluentDialog Dialog { get; set; }
+
+    private async Task SaveAsync()
+    {
+        await Content.SaveAsync.Invoke(Content.Values);
+        await Dialog.CloseAsync();
+    }
+
+    private async Task CloseAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+
+}

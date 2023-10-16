@@ -1,0 +1,14 @@
+﻿@namespace Star_Wars_DataBase.Shared.UI
+
+<div>
+    <div class="card">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

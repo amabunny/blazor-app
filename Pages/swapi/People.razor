@@ -1,0 +1,43 @@
+﻿@page "/swapi/people"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<BaseLayoutContent PageTitle="People"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories }">
+    <Header>
+        People
+    </Header>
+
+    <ChildContent>
+        <EntitiesTable FetchList="SwapiService.GetPeopleAsync">
+            <FluentDataGrid Items="@context" GridTemplateColumns="1fr 150px 150px 150px 100px 100px">
+                <ChildContent>
+                    <PropertyColumn Property="@(p => p.Name)"/>
+
+                    <PropertyColumn Property="@(p => p.BirthYear)"
+                                    Title="Birth year"/>
+
+                    <PropertyColumn Property="@(p => p.Gender)"/>
+
+                    <PropertyColumn Property="@(p => p.SkinColor)"
+                                    Title="Skin color"/>
+
+                    <PropertyColumn Property="@(p => p.Mass)"/>
+
+                    <TemplateColumn Context="person"
+                                    Title="Actions"
+                                    Align="Align.End"
+                                    TGridItem="PersonDto">
+                        <NavigateActionButton Uri=@($"swapi/people/{person.Id}")/>
+                    </TemplateColumn>
+                </ChildContent>
+
+                <EmptyContent/>
+            </FluentDataGrid>
+        </EntitiesTable>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+}

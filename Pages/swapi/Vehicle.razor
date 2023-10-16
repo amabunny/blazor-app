@@ -1,0 +1,124 @@
+@page "/swapi/vehicles/{id}"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<FetchState FetcherFunctionAsync=@(() => SwapiService.GetVehicleAsync(Id, false)) @bind-Loading="_loading"
+            @bind-Data="_vehicle"/>
+
+<BaseLayoutContent PageTitle="@_vehicle.Name"
+                   Loading="_loading"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories, BreadcrumbsItems.Vehicles }">
+
+    <Header>
+        @_vehicle.Name
+    </Header>
+
+    <ChildContent>
+        <EntityLayout>
+            <Grid TemplateColumns="auto 1fr" Gap="40">
+                <DataItem AttributeName="Created"
+                          Value="@_vehicle.CreatedTime"
+                          Loading="_loading"
+                          Small="true"
+                          Horizontal="true">
+                    @context.ToString("y")
+                </DataItem>
+
+                <DataItem AttributeName="Edited"
+                          Value="@_vehicle.EditedTime"
+                          Loading="_loading"
+                          Small="true"
+                          Horizontal="true">
+                    @context.ToString("y")
+                </DataItem>
+            </Grid>
+
+
+            <Grid TemplateColumns="1fr 1fr 1fr 1fr" Gap="20">
+                <DataItem AttributeName="Cargo Capacity"
+                          Value="@_vehicle.CargoCapacity"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Consumables"
+                          Value="@_vehicle.Consumables"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Cost in credits"
+                          Value="@_vehicle.CostInCreditsFormatted"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Crew"
+                          Value="@_vehicle.Crew"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Length"
+                          Value="@_vehicle.Length"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Manufacturer"
+                          Value="@_vehicle.Manufacturer"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Max atmosphering speed"
+                          Value="@_vehicle.MaxAtmospheringSpeed"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Max atmosphering speed"
+                          Value="@_vehicle.MaxAtmospheringSpeed"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Model"
+                          Value="@_vehicle.Model"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Passengers"
+                          Value="@_vehicle.Passengers"
+                          Loading="_loading"/>
+
+                <DataItem AttributeName="Vehicle class"
+                          Value="@_vehicle.VehicleClass"
+                          Loading="_loading"/>
+            </Grid>
+
+
+            <Grid TemplateColumns="auto 1fr" TemplateRows="auto" Gap="40">
+                <DataItem AttributeName="Pilots"
+                          Value="@_vehicle.PilotsLoaded"
+                          Loading="_loading"
+                          Hidden="_vehicle.PilotsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="pilot">
+                        <div>
+                            <NavLink Href="@pilot.Uri">
+                                @pilot.Name
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+
+                <DataItem AttributeName="Films"
+                          Value="@_vehicle.FilmsLoaded"
+                          Loading="_loading"
+                          Hidden="_vehicle.FilmsLoaded?.Length == 0"
+                          Small="true">
+                    <ArrayChild Items="@context" Context="film">
+                        <div>
+                            <NavLink Href="@film.Uri">
+                                @film.Title
+                            </NavLink>
+                        </div>
+                    </ArrayChild>
+                </DataItem>
+            </Grid>
+        </EntityLayout>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private VehicleDto _vehicle = new();
+    private bool _loading = true;
+}

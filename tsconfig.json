@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "types": [
+      "vite/client"
+    ],
+    "paths": {
+      "@/*": [
+        "./Assets/*"
+      ]
+    }
+  },
+  "include": [
+    "Assets",
+    "vite.config.ts"
+  ]
+}

@@ -1,0 +1,46 @@
+﻿@page "/swapi/starships"
+@layout BaseLayout
+
+@inject SwapiService SwapiService
+
+<BaseLayoutContent PageTitle="Starships"
+                   BreadCrumbs="new[] { BreadcrumbsItems.Categories }">
+    <Header>
+        Starships
+    </Header>
+
+    <ChildContent>
+        <EntitiesTable FetchList="SwapiService.GetStarshipsAsync">
+            <FluentDataGrid Items="@context" GridTemplateColumns="1fr 1fr 180px 150px 200px 100px">
+                <ChildContent>
+                    <PropertyColumn Property="@(s => s.Name)"/>
+
+                    <PropertyColumn Property="@(s => s.Manufacturer)"/>
+
+                    <TemplateColumn Context="starship" Title="Cost in credits">
+                        @SwapiUtils.FormatNumber(starship.CostInCredits)
+                    </TemplateColumn>
+
+                    <PropertyColumn Property="@(s => s.HyperdriveRating)"
+                                    Title="Hyperdrive rating"/>
+
+                    <PropertyColumn Property="@(s => s.MaxAtmospheringSpeed)"
+                                    Title="Max atmosphering speed"/>
+
+                    <TemplateColumn Title="Actions"
+                                    Context="starship"
+                                    Align="Align.End"
+                                    TGridItem="StarshipDto">
+                        <NavigateActionButton Uri=@($"swapi/starships/{starship.Id}")/>
+                    </TemplateColumn>
+                </ChildContent>
+
+                <EmptyContent/>
+            </FluentDataGrid>
+        </EntitiesTable>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+}

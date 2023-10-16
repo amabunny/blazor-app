@@ -1,0 +1,41 @@
+﻿@page "/swapi/species"
+@inject SwapiService SwapiService
+@layout BaseLayout
+
+<BaseLayoutContent PageTitle="Species" BreadCrumbs="new[] { BreadcrumbsItems.Categories }">
+    <Header>
+        Species
+    </Header>
+
+    <ChildContent>
+        <EntitiesTable FetchList="SwapiService.GetSpeciesAsync">
+            <FluentDataGrid Items="@context" GridTemplateColumns="1fr 150px 150px 150px 110px 100px">
+                <ChildContent>
+                    <PropertyColumn Property="p => p.Name"/>
+
+                    <PropertyColumn Property="p => p.AverageHeight"
+                                    Title="Average height"/>
+
+                    <PropertyColumn Property="p => p.AverageLifespan"
+                                    Title="Average lifespan"/>
+
+                    <PropertyColumn Property="p => p.Classification"/>
+
+                    <PropertyColumn Property="p => p.Designation"/>
+
+                    <TemplateColumn Context="row"
+                                    Title="Actions"
+                                    Align="Align.End"
+                                    TGridItem="SpecDto">
+                        <NavigateActionButton Uri=@($"swapi/species/{row.Id}")/>
+                    </TemplateColumn>
+                </ChildContent>
+                <EmptyContent/>
+            </FluentDataGrid>
+        </EntitiesTable>
+    </ChildContent>
+</BaseLayoutContent>
+
+@code {
+
+}

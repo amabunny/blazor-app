@@ -1,0 +1,31 @@
+﻿.scroll {
+    overflow-y: auto;
+    position: relative;
+}
+
+.header {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.body {
+    padding: 20px 30px;
+    height: 100%;
+    color: black;
+
+    & .divider {
+        margin-bottom: 20px;
+    }
+}
+
+.body ::deep .header-columns {
+    margin-bottom: 15px;
+}
+
+.content-layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

@@ -1,0 +1,20 @@
+﻿@typeparam T
+@namespace Star_Wars_DataBase.Shared.UI 
+
+@if (Items != null && ChildContent != null)
+{
+    @foreach (var item in Items)
+    {
+        @ChildContent(item)
+    }
+
+}
+
+@code {
+    [Parameter]
+    public T[]? Items { get; set; }
+
+    [Parameter]
+    public RenderFragment<T>? ChildContent { get; set; }
+}
+
