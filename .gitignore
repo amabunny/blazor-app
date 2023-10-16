@@ -136,3 +136,4 @@ dist
 bin/
 *.DotSettings.user
 obj/
+.DS_Store
